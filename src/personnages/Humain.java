@@ -1,9 +1,13 @@
 package personnages;
 
+import java.util.Iterator;
+
 public class Humain {
 	private String nom;
 	private String boissonFav;
 	private int argent;
+	protected int nbConnaissance = 0;
+	protected Humain [] memoire = new Humain [30];
 	
 	public String getNom() {
 		return nom;
@@ -47,4 +51,38 @@ public class Humain {
 	protected void perdreArgent(int perte) {
 		this.argent -= perte;
 	}
+	
+	public void faireConnaissanceAvec(Humain autreHumain) {
+		repondre(autreHumain);
+		autreHumain.memoriser(this);		
+	}
+	
+	private void memoriser(Humain humain) {
+		if (nbConnaissance < 30) {
+			memoire[nbConnaissance] = humain;
+			nbConnaissance ++;
+		} else {
+			for (int i = 1; i < 30; i++) {
+				memoire[i-1] = memoire[i];
+			}
+			memoire[nbConnaissance-1] = humain;
+		}
+	}
+	
+	private void repondre(Humain humain) {
+		direBonjour();
+		memoriser(humain);
+	}
+	
+	public void listerConnaissance() {
+		String parole = "Je connais beaucoup de monde dont : ";
+		for (int i = 0; i < nbConnaissance; i++) {
+			parole += memoire[i].getNom();
+			if (i < nbConnaissance-1) {
+				parole += ", ";
+			}
+		parler(parole);
+		}
+	}
 }
+
